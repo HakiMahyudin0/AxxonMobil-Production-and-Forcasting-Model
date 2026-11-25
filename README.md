@@ -5,6 +5,8 @@
 Team Data Wizards: Hakim, Harith, Farish, and Imran  
 Submission date: 16 October 2026
 
+**Tech:** Python · PyTorch (LSTM) · scikit-learn (Gaussian processes, PCA) · SciPy (differential evolution) · pandas · Google Colab
+
 ## Project overview
 
 This project uses simulated reservoir cases and observed field production to estimate uncertain reservoir parameters, compare two proxy-modeling approaches, and forecast production from April 2008 through January 2028.
@@ -18,26 +20,36 @@ The study contains 100 simulated cases, each defined by four uncertain parameter
 
 The observed and simulated production histories are aligned to 41 quarterly dates from 1 January 1998 to 1 January 2008. Oil, gas, and water rates are modeled together with their cumulative-production counterparts.
 
-## Project contents
+## Quick start
 
-The project consists of the notebook and the files in `Dataset`. Other files and folders in the directory are not required for the project.
+```bash
+python -m venv .venv
+.venv\Scripts\activate        # Windows (macOS/Linux: source .venv/bin/activate)
+pip install -r requirements.txt
+jupyter notebook Dataworks.ipynb
+```
+
+See [Running the notebook](#running-the-notebook) for the Colab setup the notebook expects.
+
+## Project contents
 
 | File | Description |
 |---|---|
 | `Dataworks.ipynb` | Main notebook containing data preparation, exploratory analysis, model training, history matching, forecasting, and validation. |
-| `Dataset/01_Introduction.parquet` | Reservoir nomenclature and the four uncertain parameters for the cases. |
-| `Dataset/02_Field_Production.parquet` | Observed field-production data and production-series information. |
-| `Dataset/03_Train_Cases_1.parquet` | Training cases 1–20. |
-| `Dataset/04_Train_Cases_2.parquet` | Training cases 21–40. |
-| `Dataset/05_Train_Cases_3.parquet` | Training cases 41–60. |
-| `Dataset/06_Train_Cases_4.parquet` | Training cases 61–70. |
-| `Dataset/07_Validation_Cases.parquet` | Validation cases 71–85. |
-| `Dataset/08_Test_Cases.parquet` | Test cases 86–100. |
-| `Dataset/09_Template_Deliverable.parquet` | Template structure for the ten forecast cases. |
-| `Dataset/models/reservoirLSTM_1.pth` | Saved trained ReservoirLSTM model weights used by the forecasting workflow. |
-| `Dataset/clean/Template_filled.xlsx` | Completed forecast workbook containing the ten selected forecast cases. |
+| `01_Introduction.parquet` | Reservoir nomenclature and the four uncertain parameters for the cases. |
+| `02_Field_Production.parquet` | Observed field-production data and production-series information. |
+| `03_Train_Cases_1.parquet` | Training cases 1–20. |
+| `04_Train_Cases_2.parquet` | Training cases 21–40. |
+| `05_Train_Cases_3.parquet` | Training cases 41–60. |
+| `06_Train_Cases_4.parquet` | Training cases 61–70. |
+| `07_Validation_Cases.parquet` | Validation cases 71–85. |
+| `08_Test_Cases.parquet` | Test cases 86–100. |
+| `09_Template_Deliverable.parquet` | Template structure for the ten forecast cases. |
+| `requirements.txt` | Python packages used by the notebook. |
 
-The notebook internally works with clean tables representing 100 cases, 4,100 simulated quarterly records, and 41 observed quarterly records. Intermediate tables are runtime artifacts, while the trained model and completed forecast workbook are included in `Dataset`.
+Not uploaded to this repository: the trained model weights (`models/reservoirLSTM_1.pth`) and the completed forecast workbook (`clean/Template_filled.xlsx`). The notebook can retrain the model from the data above.
+
+The notebook internally works with clean tables representing 100 cases, 4,100 simulated quarterly records, and 41 observed quarterly records.
 
 ## Notebook workflow
 
@@ -92,17 +104,17 @@ The ten selected cases cover approximately `62.7–63.5 million STB` of cumulati
 
 ## Running the notebook
 
-The notebook was developed for Google Colab and is not completely self-contained as a local script. Some cells expect Google Drive paths and a private GitHub repository containing intermediate clean tables. The trained model is supplied locally at `Dataset/models/reservoirLSTM_1.pth`, and the completed workbook is supplied at `Dataset/clean/Template_filled.xlsx`.
+The notebook was developed for Google Colab and is not completely self-contained as a local script. Some cells expect Google Drive paths and a private GitHub repository containing intermediate clean tables.
 
 To reproduce the completed workflow in Colab:
 
 1. Open `Dataworks.ipynb` in Google Colab.
 2. Mount Google Drive if running the data-preparation cells. The notebook expects the original workbook source files under the `dw26/xlsx` project location.
 3. Create a Colab secret named `GITHUB_TOKEN` with access to the private data repository used by the notebook.
-4. Run the dependency-installation and data-loading cells before the modeling cells. The notebook uses `pandas`, `numpy`, `scikit-learn`, `scipy`, `torch`, `matplotlib`, `openpyxl`, `pyarrow`, and `python-calamine`.
+4. Run the dependency-installation and data-loading cells before the modeling cells (packages are listed in `requirements.txt`).
 5. Run the notebook from the data checks through the final forecast cells. If the clean tables and trained model have already been prepared remotely, the later modeling sections can be run without repeating the original workbook conversion.
 
-When executed, the notebook may create intermediate files such as `history_match_top20.parquet`, `forecast_ensemble.parquet`, and `best10_params.parquet` in the Colab runtime. The final trained model and completed forecast workbook are already supplied in `Dataset`.
+When executed, the notebook may create intermediate files such as `history_match_top20.parquet`, `forecast_ensemble.parquet`, and `best10_params.parquet` in the Colab runtime.
 
 ## Limitations
 

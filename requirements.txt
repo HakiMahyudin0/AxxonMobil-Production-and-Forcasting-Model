@@ -1,0 +1,11 @@
+# Packages used by Dataworks.ipynb (developed on Google Colab, Python 3.11+)
+pandas
+numpy
+scikit-learn
+scipy
+torch
+matplotlib
+openpyxl
+pyarrow
+python-calamine
+jupyter

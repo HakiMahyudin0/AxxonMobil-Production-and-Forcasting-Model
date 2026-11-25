@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Jupyter / Colab
+.ipynb_checkpoints/
+
+# Runtime outputs created by the notebook
+history_match_top20.parquet
+forecast_ensemble.parquet
+best10_params.parquet
+
+# Secrets
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
